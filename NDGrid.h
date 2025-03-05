@@ -75,7 +75,7 @@ class NDGrid{
 		// DO NOT USE THIS FUNCTION - IT PRODUCES A CORRUMPT FILE void print_sidis_format(std::ofstream &f); // print to stream all kinematic binning and then all pids with the respective counter. special function for my sidis purpose.
 		void print(std::ofstream &f); // print to stream fully listed all bins.
 		void print(std::string &adress); //print into ofstream created linked to adress
-		void print_normalized(std::string &normalized_file,const int nEvents);
+		void print_normalized(std::string &normalized_file, const int nEvents);
 		std::vector<std::vector<double>> copy_grid(); //returns "values"
 		//void info(std::string &file); // print some information about this NDGrid into a file. Not urget or necessary atm.
 };
@@ -85,6 +85,8 @@ namespace NDGridAF{ // auxiliary functions that I do not want to be member funct
 void multiplicity_to_file(std::string file, NDGrid &sidis, NDGrid &dis, std::vector<bool> &vars, const char delimiter); */// read sidis and dis grid, and compute and then print the multiplicities.
 
 void print_normed(std::string &file, NDGrid &hist, std::vector<bool> &vars, double globalNormV, const char delimiter); // prints to file the hist, the vars that are true will be normalized to bin size and also every  bin will be divided by the last argument(globalNormV).
+
+void print_normedInverse(std::string &file, NDGrid &hist, std::vector<bool> &vars, double globalNormV, const char delimiter); // prints to file the hist, the vars that are true will be normalized to bin size INVERSE (multiplied by size) and also every  bin will be divided by the last argument(globalNormV).
 
 void multiplicity_to_file(std::string &file, NDGrid &sidis, NDGrid &dis, std::vector<bool> &vars, const char delimiter); // same function but takes string as reference. the above function calls this one.
 

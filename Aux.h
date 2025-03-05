@@ -731,6 +731,10 @@ unsigned int getBinIndex(std::vector<I> &vec, I entry)
 {
 	//assume i am no idiot and the vector binning contains this entry
 	
+	//if the entry is exactly the very very last border, in this case return the last bin!
+	if(entry == vec[vec.size()-1])
+		return vec.size()-2;
+	
 	for(unsigned int i = 0; i < vec.size()-1; ++i)
 	{
 		if(vec[i] <= entry && vec[i+1] > entry )
@@ -738,9 +742,7 @@ unsigned int getBinIndex(std::vector<I> &vec, I entry)
 			return i;
 		}
 	}
-	//if the entry is exactly the very very last border, in this case return the last bin!
-	if(entry == vec[vec.size()-1])
-		return vec.size()-1;
+	
 	
 	error("the vector binning does not seem to contain the entry \"" + std::to_string(entry) + "\". ");
 	//std::cout << "the vector binning does not seem to contain the entry \"" << entry << "\". " << std::endl;

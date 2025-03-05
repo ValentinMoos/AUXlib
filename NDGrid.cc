@@ -490,6 +490,38 @@ namespace NDGridAF{
 
 		return;
 	}
+	
+	void print_normedInverse(std::string &file, NDGrid &hist, std::vector<bool> &vars, double globalNormV, const char delimiter){ // essentially i copied the code of the function "multiplicity_to_file"...
+		std::vector<std::vector<double>> grid = hist.copy_grid();
+		std::vector<double> normvals (hist.grid_size(), 0.);
+		for(unsigned int i = 0; i < hist.grid_size(); ++i){
+			std::vector<unsigned int> indices = hist.multiindex(i);
+			double val = double(hist.access_position(indices));
+			double measure = 1;
+			for(unsigned int j = 0; j < vars.size(); ++j){
+				if(vars[j]){
+				//means this variable has to be normalized;
+					std::vector<double> v = grid[j];
+					measure *= (v[indices[j]+1] - v[indices[j]]); // measure of this bin of the j-th variable.
+					}
+			}
+			measure *= globalNormV;
+			
+			normvals[i] = val * measure; // only difference to above regular norm function.
+		}
+		std::ofstream f;
+		f.open(file);
+		for(unsigned int i = 0; i < hist.grid_size(); ++i){
+			std::vector<unsigned int> indices = hist.multiindex(i);
+			for(unsigned int j = 0; j < grid.size(); ++j){
+				f << grid[j][indices[j]] << delimiter << grid[j][indices[j]+1] << delimiter; // lets trust this 
+			}
+			f << normvals[i];
+			f << std::endl;
+		}
+
+		return;
+	}
 
 	void multiplicity_to_file(std::string &file, NDGrid &sidis, NDGrid &dis, std::vector<bool> &vars, const char delimiter){
 		std::vector<std::vector<double>> grid = sidis.copy_grid();
